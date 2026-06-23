@@ -1,4 +1,4 @@
-import { useScrollAnimation, useStaggerAnimation } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useStaggerAnimation, useTilt } from '../hooks/useScrollAnimation'
 import './Process.css'
 
 const steps = [
@@ -32,6 +32,47 @@ const steps = [
   },
 ]
 
+function StepCard({ step, index, setRef, visible }) {
+  const tiltRef = useTilt({ max: 9, scale: 1.03 })
+
+  return (
+    <div
+      key={step.number}
+      ref={setRef(index)}
+      className={`process-step anim-fade-up ${visible ? 'visible' : ''}`}
+      style={{ transitionDelay: `${index * 0.12}s` }}
+    >
+      {/* Step number */}
+      <div className="step-number-wrap">
+        <span className="step-number">{step.number}</span>
+        <div className="step-number-glow"></div>
+      </div>
+
+      {/* Connector dot */}
+      <div className="step-dot">
+        <div className="step-dot-inner"></div>
+        <div className="step-dot-ring"></div>
+      </div>
+
+      {/* Card */}
+      <div ref={tiltRef} className="step-card tilt-card spotlight-card">
+        <span className="tilt-glare" aria-hidden="true"></span>
+        <div className="step-card-inner">
+          <div className="step-card-accent"></div>
+          <h3 className="step-title">{step.title}</h3>
+          <p className="step-subtitle">{step.subtitle}</p>
+          <p className="step-desc">{step.description}</p>
+          <div className="step-tags">
+            {step.tags.map((tag) => (
+              <span key={tag} className="step-tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Process() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const [setRef, stepsVisible] = useStaggerAnimation(steps.length, 0.15)
@@ -49,8 +90,12 @@ function Process() {
             02 — Process
           </div>
           <h2 className="process-title">
-            <span className="process-title-line">How I</span>
-            <span className="process-title-future">WORK</span>
+            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
+              <span className="reveal-line process-title-line">How I</span>
+            </span>
+            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
+              <span className="reveal-line process-title-future">WORK</span>
+            </span>
           </h2>
           <p className="process-subtitle">
             A systematic approach to building software — from first principles to production-ready systems.
@@ -66,39 +111,13 @@ function Process() {
         {/* Steps Grid */}
         <div className="process-grid">
           {steps.map((step, i) => (
-            <div
+            <StepCard
               key={step.number}
-              ref={setRef(i)}
-              className={`process-step anim-fade-up ${stepsVisible.has(i) ? 'visible' : ''}`}
-              style={{ transitionDelay: `${i * 0.12}s` }}
-            >
-              {/* Step number */}
-              <div className="step-number-wrap">
-                <span className="step-number">{step.number}</span>
-                <div className="step-number-glow"></div>
-              </div>
-
-              {/* Connector dot */}
-              <div className="step-dot">
-                <div className="step-dot-inner"></div>
-                <div className="step-dot-ring"></div>
-              </div>
-
-              {/* Card */}
-              <div className="step-card card-tilt">
-                <div className="step-card-inner">
-                  <div className="step-card-accent"></div>
-                  <h3 className="step-title">{step.title}</h3>
-                  <p className="step-subtitle">{step.subtitle}</p>
-                  <p className="step-desc">{step.description}</p>
-                  <div className="step-tags">
-                    {step.tags.map((tag) => (
-                      <span key={tag} className="step-tag">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+              step={step}
+              index={i}
+              setRef={setRef}
+              visible={stepsVisible.has(i)}
+            />
           ))}
         </div>
 

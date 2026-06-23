@@ -1,4 +1,4 @@
-import { useScrollAnimation, useStaggerAnimation, useMouseParallax } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useStaggerAnimation, useMouseParallax, useTilt } from '../hooks/useScrollAnimation'
 import './Stack.css'
 
 const technologies = [
@@ -60,6 +60,36 @@ const categories = [
   }
 ]
 
+function CategoryCard({ category, index, setCatRef, visible, mousePos }) {
+  const tiltRef = useTilt({ max: 12, scale: 1.04 })
+
+  return (
+    <div
+      key={category.title}
+      ref={setCatRef(index)}
+      className={`category-shell anim-fade-up ${visible ? 'visible' : ''}`}
+      style={{
+        transitionDelay: `${index * 0.1}s`,
+        transform: `translate(${mousePos.x * (index % 2 === 0 ? 0.3 : -0.3)}px, ${mousePos.y * 0.2}px)`
+      }}
+    >
+      <div ref={tiltRef} className="category-core tilt-card spotlight-card">
+        <span className="tilt-glare" aria-hidden="true"></span>
+        <div className="category-icon">{category.icon}</div>
+        <h3 className="category-title">{category.title}</h3>
+        <ul className="category-items">
+          {category.items.map((item) => (
+            <li key={item} className="category-item">
+              <span className="item-dot"></span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
 function Stack() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const [setCatRef, visibleCats] = useStaggerAnimation(categories.length, 0.1)
@@ -77,34 +107,24 @@ function Stack() {
             <span className="eyebrow-dot"></span>
             03 — Stack
           </div>
-          <h2 className="section-title">Tech Stack</h2>
+          <h2 className="section-title">
+            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
+              <span className="reveal-line">Tech Stack</span>
+            </span>
+          </h2>
           <p className="section-subtitle">Technologies I work with</p>
         </div>
 
         <div className="stack-categories">
           {categories.map((category, index) => (
-            <div
+            <CategoryCard
               key={category.title}
-              ref={setCatRef(index)}
-              className={`category-shell card-tilt anim-fade-up ${visibleCats.has(index) ? 'visible' : ''}`}
-              style={{
-                transitionDelay: `${index * 0.1}s`,
-                transform: `translate(${mousePos.x * (index % 2 === 0 ? 0.3 : -0.3)}px, ${mousePos.y * 0.2}px)`
-              }}
-            >
-              <div className="category-core">
-                <div className="category-icon">{category.icon}</div>
-                <h3 className="category-title">{category.title}</h3>
-                <ul className="category-items">
-                  {category.items.map((item) => (
-                    <li key={item} className="category-item">
-                      <span className="item-dot"></span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+              category={category}
+              index={index}
+              setCatRef={setCatRef}
+              visible={visibleCats.has(index)}
+              mousePos={mousePos}
+            />
           ))}
         </div>
 
@@ -114,7 +134,7 @@ function Stack() {
         >
           <h3 className="skills-title">Proficiency</h3>
           <div className="skills-grid">
-            {technologies.map((tech) => (
+            {technologies.map((tech, i) => (
               <div key={tech.name} className="skill-item">
                 <div className="skill-header">
                   <span className="skill-name">{tech.name}</span>
@@ -123,7 +143,10 @@ function Stack() {
                 <div className="skill-bar">
                   <div
                     className="skill-progress"
-                    style={{ width: `${tech.level}%` }}
+                    style={{
+                      width: skillsVisible ? `${tech.level}%` : '0%',
+                      transitionDelay: `${i * 0.08}s`,
+                    }}
                   ></div>
                 </div>
               </div>

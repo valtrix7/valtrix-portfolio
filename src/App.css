@@ -37,13 +37,17 @@
 }
 
 .section-title {
-  font-family: var(--font-display);
+  font-family: var(--font-futuristic);
   font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.04em;
+  font-weight: 900;
+  letter-spacing: 0.1em;
   line-height: 1.05;
   margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(255,255,255,0.1));
 }
 
 .section-subtitle {
@@ -193,4 +197,134 @@
 @keyframes glowPulse {
   0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.03); }
   50% { box-shadow: 0 0 40px rgba(255,255,255,0.06); }
+}
+
+/* ======================== */
+/* 3D TILT CARDS            */
+/* ======================== */
+/* Add `.tilt-card` to any card; `useTilt()` sets --rx/--ry/--mx/--my.
+   The card tilts toward the cursor in 3D; an optional `.tilt-glare`
+   child tracks the cursor as a moving highlight. */
+.tilt-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  --tilt-scale: 1.02;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) scale(1);
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.tilt-card[data-tilt-active="true"] {
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--tilt-scale));
+}
+
+/* Optional glare overlay — place as a child of .tilt-card.
+   It brightens near the cursor and fades in only while hovered. */
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: radial-gradient(
+    circle 220px at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 35%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  z-index: 3;
+}
+
+.tilt-card[data-tilt-active="true"] .tilt-glare {
+  opacity: 1;
+}
+
+/* ======================== */
+/* SPOTLIGHT CARD           */
+/* ======================== */
+/* A soft light that tracks the cursor across the surface.
+   Add `.spotlight-card` to the element; it uses the same --mx/--my
+   vars that `useTilt` sets, so pair them together. */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  background: radial-gradient(
+    circle 180px at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 65%
+  );
+}
+
+.spotlight-card[data-tilt-active="true"]::after {
+  opacity: 1;
+}
+
+/* ======================== */
+/* REVEAL TITLE (mask wipe) */
+/* ======================== */
+/* Wrap the title text in a `.reveal-mask` and give the text `.reveal-line`.
+   Before reveal, the line sits below + clipped; on `.visible` it wipes up. */
+.reveal-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em; /* avoids clipping descenders during wipe */
+}
+
+.reveal-line {
+  display: block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-mask.visible .reveal-line,
+.visible > .reveal-mask .reveal-line {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ======================== */
+/* REDUCED MOTION           */
+/* ======================== */
+/* Honor the user's OS-level preference: kill transforms, parallax, loops.
+   Animations that reveal content snap to the visible state instantly. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .tilt-card,
+  .tilt-card[data-tilt-active="true"] {
+    transform: none !important;
+  }
+
+  .reveal-line {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }

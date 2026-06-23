@@ -68,6 +68,7 @@
 }
 
 .stat-core {
+  position: relative;
   background: rgba(255, 255, 255, 0.015);
   border-radius: calc(var(--radius-xl) - 1px);
   padding: clamp(1.5rem, 3vw, 2.5rem);

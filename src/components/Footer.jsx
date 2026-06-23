@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'
+import { useMagnetic } from '../hooks/useScrollAnimation'
 import './Footer.css'
 
 function Footer() {
+  const logoRef = useMagnetic(0.2)
+
   return (
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-left">
-          <Link to="/" className="footer-logo">VALTRIX</Link>
+          <Link ref={logoRef} to="/" className="footer-logo">VALTRIX</Link>
           <span className="footer-divider"></span>
           <p className="footer-tagline">Full stack developer building scalable web applications.</p>
         </div>

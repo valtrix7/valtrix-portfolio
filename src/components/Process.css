@@ -20,17 +20,18 @@
 }
 
 .process-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.04em;
-  line-height: 1.05;
   margin-bottom: 1rem;
 }
 
 .process-title-line {
   display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  -webkit-text-fill-color: initial;
+  background: none;
+  filter: none;
 }
 
 .process-title-future {

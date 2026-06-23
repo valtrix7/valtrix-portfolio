@@ -68,6 +68,8 @@
 }
 
 .bio-stat-core {
+  position: relative;
+  overflow: hidden;
   background: rgba(255, 255, 255, 0.015);
   border-radius: calc(var(--radius-xl) - 1px);
   padding: 1.5rem 2rem;

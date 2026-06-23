@@ -43,6 +43,7 @@
 }
 
 .project-core {
+  position: relative;
   background: rgba(255, 255, 255, 0.015);
   border-radius: calc(var(--radius-xl) - 1px);
   overflow: hidden;

@@ -79,7 +79,11 @@ function BlogPage() {
             <span className="eyebrow-dot"></span>
             Blog
           </div>
-          <h1 className="page-title">Writing</h1>
+          <h1 className="page-title">
+            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
+              <span className="reveal-line">Writing</span>
+            </span>
+          </h1>
           <p className="page-subtitle">Thoughts on code, Web3, and building things</p>
         </div>
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useScrollAnimation, useStaggerAnimation } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt } from '../hooks/useScrollAnimation'
 import './AboutPage.css'
 
 const timeline = [
@@ -65,6 +65,35 @@ const values = [
   }
 ]
 
+function parseStat(value) {
+  const match = String(value).match(/(\d+(?:\.\d+)?)/)
+  if (!match) return { target: 0, suffix: '' }
+  return {
+    target: parseFloat(match[1]),
+    suffix: String(value).slice(match[1].length),
+  }
+}
+
+function BioStat({ stat, visible, index }) {
+  const tiltRef = useTilt({ max: 10, scale: 1.03 })
+  const { target, suffix } = parseStat(stat.number)
+  const decimals = Number.isInteger(target) ? 0 : 1
+  const current = useCountUp(target, visible, { duration: 1600, decimals })
+
+  return (
+    <div className="bio-stat-shell" style={{ transitionDelay: `${index * 0.1}s` }}>
+      <div ref={tiltRef} className="bio-stat-core glow-pulse tilt-card spotlight-card">
+        <span className="tilt-glare" aria-hidden="true"></span>
+        <div className="stat-number">
+          {current}{visible ? suffix : ''}
+        </div>
+        <div className="stat-label">{stat.label}</div>
+        <div className="stat-sublabel">{stat.sublabel}</div>
+      </div>
+    </div>
+  )
+}
+
 function AboutPage() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const [contentRef, contentVisible] = useScrollAnimation(0.1)
@@ -75,6 +104,12 @@ function AboutPage() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const stats = [
+    { number: '2+', label: 'Years', sublabel: 'Experience' },
+    { number: '25+', label: 'Projects', sublabel: 'Shipped' },
+    { number: '6+', label: 'Open Source', sublabel: 'Contributions' }
+  ]
 
   return (
     <section className="about-page">
@@ -88,7 +123,11 @@ function AboutPage() {
             <span className="eyebrow-dot"></span>
             About
           </div>
-          <h1 className="page-title">About Me</h1>
+          <h1 className="page-title">
+            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
+              <span className="reveal-line">About Me</span>
+            </span>
+          </h1>
           <p className="page-subtitle">The person behind the code</p>
         </div>
 
@@ -117,18 +156,8 @@ function AboutPage() {
           </div>
 
           <div className="bio-stats">
-            {[
-              { number: '2+', label: 'Years', sublabel: 'Experience' },
-              { number: '25+', label: 'Projects', sublabel: 'Shipped' },
-              { number: '6+', label: 'Open Source', sublabel: 'Contributions' }
-            ].map((stat, i) => (
-              <div key={i} className="bio-stat-shell card-tilt" style={{ transitionDelay: `${i * 0.1}s` }}>
-                <div className="bio-stat-core glow-pulse">
-                  <div className="stat-number">{stat.number}</div>
-                  <div className="stat-label">{stat.label}</div>
-                  <div className="stat-sublabel">{stat.sublabel}</div>
-                </div>
-              </div>
+            {stats.map((stat, i) => (
+              <BioStat key={i} stat={stat} index={i} visible={contentVisible} />
             ))}
           </div>
         </div>

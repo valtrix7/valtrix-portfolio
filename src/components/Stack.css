@@ -45,6 +45,8 @@
 }
 
 .category-core {
+  position: relative;
+  overflow: hidden;
   background: rgba(255, 255, 255, 0.015);
   border-radius: calc(var(--radius-xl) - 1px);
   padding: clamp(1.25rem, 2.5vw, 2rem);

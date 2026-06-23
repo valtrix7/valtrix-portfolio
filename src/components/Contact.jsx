@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { useScrollAnimation } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useMagnetic } from '../hooks/useScrollAnimation'
 import './Contact.css'
 
 function Contact() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const [formRef, formVisible] = useScrollAnimation(0.1)
+  const submitRef = useMagnetic(0.3)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -52,7 +53,11 @@ function Contact() {
             <span className="eyebrow-dot"></span>
             04 — Contact
           </div>
-          <h2 className="section-title">Get In Touch</h2>
+          <h2 className="section-title">
+            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
+              <span className="reveal-line">Get In Touch</span>
+            </span>
+          </h2>
           <p className="section-subtitle">Let's build something together</p>
         </div>
 
@@ -110,7 +115,7 @@ function Contact() {
                 </div>
               </div>
 
-              <button type="submit" className="submit-btn magnetic-hover">
+              <button ref={submitRef} type="submit" className="submit-btn">
                 <span>Send Message</span>
                 <span className="submit-btn-icon">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

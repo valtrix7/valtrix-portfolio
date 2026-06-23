@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import { useMagnetic, useParallax } from '../hooks/useScrollAnimation'
 import './Hero.css'
 
 function Hero({ mousePosition, scrollProgress }) {
@@ -9,6 +10,15 @@ function Hero({ mousePosition, scrollProgress }) {
   const [isHovering, setIsHovering] = useState(false)
   const eclipseRef = useRef(null)
   const fullText = 'Full Stack Developer'
+
+  // Parallax — mesh orbs drift at different scroll speeds
+  const [mesh1Ref, mesh1Offset] = useParallax(0.3)
+  const [mesh2Ref, mesh2Offset] = useParallax(-0.2)
+  const [mesh3Ref, mesh3Offset] = useParallax(0.15)
+
+  // Magnetic — CTA buttons pull toward cursor
+  const ctaPrimaryRef = useMagnetic(0.35)
+  const ctaGhostRef = useMagnetic(0.25)
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 300)
@@ -67,10 +77,10 @@ function Hero({ mousePosition, scrollProgress }) {
 
   return (
     <section className="hero" style={heroStyle}>
-      {/* Background mesh gradients */}
-      <div className="hero-mesh-1"></div>
-      <div className="hero-mesh-2"></div>
-      <div className="hero-mesh-3"></div>
+      {/* Background mesh gradients — parallax drift */}
+      <div ref={mesh1Ref} className="hero-mesh-1" style={{ transform: `translateY(${mesh1Offset}px)` }}></div>
+      <div ref={mesh2Ref} className="hero-mesh-2" style={{ transform: `translateY(${mesh2Offset}px)` }}></div>
+      <div ref={mesh3Ref} className="hero-mesh-3" style={{ transform: `translateY(${mesh3Offset}px)` }}></div>
 
       {/* Floating particles */}
       <div className="hero-particles">
@@ -187,7 +197,7 @@ function Hero({ mousePosition, scrollProgress }) {
             <span className="typed-cursor">|</span>
           </p>
           <div className="hero-actions-center">
-            <Link to="/projects" className="cta-primary">
+            <Link ref={ctaPrimaryRef} to="/projects" className="cta-primary">
               <span>Explore work</span>
               <span className="cta-icon-circle">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -195,7 +205,7 @@ function Hero({ mousePosition, scrollProgress }) {
                 </svg>
               </span>
             </Link>
-            <Link to="/contact" className="cta-ghost">
+            <Link ref={ctaGhostRef} to="/contact" className="cta-ghost">
               Let's talk
             </Link>
           </div>

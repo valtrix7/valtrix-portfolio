@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useScrollAnimation, useStaggerAnimation } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useStaggerAnimation, useTilt } from '../hooks/useScrollAnimation'
 import './ProjectsPage.css'
 
 const allProjects = [
@@ -73,6 +73,53 @@ const allProjects = [
 
 const filters = ['All', 'Full Stack', 'Web3', 'DeFi', 'Backend']
 
+function ProjectCard({ project, index, setRef, visible }) {
+  const tiltRef = useTilt({ max: 8, scale: 1.02 })
+
+  return (
+    <div
+      key={project.id}
+      ref={setRef(index)}
+      className={`project-page-shell anim-scale-in ${visible ? 'visible' : ''}`}
+      style={{ transitionDelay: `${index * 0.1}s` }}
+    >
+      <article ref={tiltRef} className="project-page-core tilt-card spotlight-card">
+        <span className="tilt-glare" aria-hidden="true"></span>
+
+        <div className="project-page-top">
+          <div className="project-page-meta">
+            <span className="project-page-category">{project.category}</span>
+            <span className={`project-page-status ${project.status.toLowerCase()}`}>{project.status}</span>
+          </div>
+          <span className="project-page-year">{project.year}</span>
+        </div>
+
+        <h3 className="project-page-title">{project.title}</h3>
+        <p className="project-page-desc">{project.description}</p>
+        <p className="project-page-long">{project.longDescription}</p>
+
+        <div className="project-page-tech">
+          {project.tech.map((tech) => (
+            <span key={tech} className="tech-tag">{tech}</span>
+          ))}
+        </div>
+
+        <div className="project-page-footer">
+          <span className="project-page-role">{project.role}</span>
+          <div className="project-page-link">
+            <span>View Details</span>
+            <span className="project-link-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 17L17 7M17 7H7M17 7V17"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </article>
+    </div>
+  )
+}
+
 function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState('All')
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
@@ -97,7 +144,11 @@ function ProjectsPage() {
             <span className="eyebrow-dot"></span>
             Projects
           </div>
-          <h1 className="page-title">All Projects</h1>
+          <h1 className="page-title">
+            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
+              <span className="reveal-line">All Projects</span>
+            </span>
+          </h1>
           <p className="page-subtitle">A collection of work across full stack and Web3</p>
         </div>
 
@@ -115,44 +166,13 @@ function ProjectsPage() {
 
         <div className="projects-page-grid">
           {filteredProjects.map((project, index) => (
-            <div
+            <ProjectCard
               key={project.id}
-              ref={setRef(index)}
-              className={`project-page-shell card-tilt anim-scale-in ${visibleItems.has(index) ? 'visible' : ''}`}
-              style={{ transitionDelay: `${index * 0.1}s` }}
-            >
-              <article className="project-page-core">
-                <div className="project-page-top">
-                  <div className="project-page-meta">
-                    <span className="project-page-category">{project.category}</span>
-                    <span className={`project-page-status ${project.status.toLowerCase()}`}>{project.status}</span>
-                  </div>
-                  <span className="project-page-year">{project.year}</span>
-                </div>
-
-                <h3 className="project-page-title">{project.title}</h3>
-                <p className="project-page-desc">{project.description}</p>
-                <p className="project-page-long">{project.longDescription}</p>
-
-                <div className="project-page-tech">
-                  {project.tech.map((tech) => (
-                    <span key={tech} className="tech-tag">{tech}</span>
-                  ))}
-                </div>
-
-                <div className="project-page-footer">
-                  <span className="project-page-role">{project.role}</span>
-                  <div className="project-page-link">
-                    <span>View Details</span>
-                    <span className="project-link-icon">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </article>
-            </div>
+              project={project}
+              index={index}
+              setRef={setRef}
+              visible={visibleItems.has(index)}
+            />
           ))}
         </div>
       </div>
