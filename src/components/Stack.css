@@ -1,0 +1,188 @@
+.stack {
+  position: relative;
+  padding: clamp(6rem, 12vw, 10rem) clamp(1.5rem, 4vw, 4rem);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+  overflow: hidden;
+}
+
+.stack::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+
+.stack-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stack-header {
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/* Categories Bento Grid */
+.stack-categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: clamp(4rem, 8vw, 6rem);
+}
+
+/* Double-Bezel Category Card */
+.category-shell {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1px;
+}
+
+.category-shell:hover {
+  border-color: var(--border-hover);
+}
+
+.category-core {
+  background: rgba(255, 255, 255, 0.015);
+  border-radius: calc(var(--radius-xl) - 1px);
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.category-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.category-title {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+.category-items {
+  list-style: none;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  padding: 0.375rem 0;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.category-shell:hover .category-item {
+  color: var(--text-secondary);
+}
+
+.item-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.category-shell:hover .item-dot {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Skills Section */
+.skills-section {
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skills-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: -0.01em;
+  margin-bottom: 2rem;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem 3rem;
+}
+
+.skill-item {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-item:hover {
+  transform: translateX(4px);
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.625rem;
+}
+
+.skill-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.skill-level {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.skill-bar {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.skill-progress {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,255,255,0.7));
+  border-radius: 2px;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-item:hover .skill-progress {
+  background: linear-gradient(90deg, rgba(255,255,255,0.5), #fff);
+}
+
+@media (max-width: 1024px) {
+  .stack-categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stack-categories {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}

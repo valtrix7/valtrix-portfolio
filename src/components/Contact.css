@@ -1,0 +1,222 @@
+.contact {
+  position: relative;
+  padding: clamp(6rem, 12vw, 10rem) clamp(1.5rem, 4vw, 4rem);
+  background: var(--bg-primary);
+  overflow: hidden;
+}
+
+.contact::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-header {
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: clamp(3rem, 6vw, 6rem);
+}
+
+/* Form */
+.contact-form-container {
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Double-Bezel Form Group */
+.form-shell {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.form-shell:focus-within {
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.form-core {
+  background: rgba(255, 255, 255, 0.015);
+  border-radius: calc(var(--radius-lg) - 1px);
+  padding: 1.25rem 1.5rem;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.form-shell:focus-within .form-label {
+  color: var(--text-secondary);
+}
+
+.form-input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  line-height: 1.5;
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.form-textarea {
+  resize: none;
+  min-height: 100px;
+}
+
+.form-error {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255, 120, 120, 0.8);
+  margin-top: 0.5rem;
+}
+
+.form-shell.error {
+  border-color: rgba(255, 120, 120, 0.3);
+}
+
+/* Island CTA Button */
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  align-self: flex-start;
+  padding: 0.875rem 2rem 0.875rem 2.25rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bg-primary);
+  background: var(--text-primary);
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.12);
+}
+
+.submit-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.submit-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.submit-btn:hover .submit-btn-icon {
+  transform: translate(2px, -2px) scale(1.05);
+}
+
+/* Contact Info */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.info-block h4 {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.625rem;
+}
+
+.info-block a,
+.info-block p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.info-block a:hover {
+  color: var(--text-primary);
+}
+
+.social-links {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.social-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.social-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--text-primary);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-link:hover {
+  color: var(--text-primary);
+}
+
+.social-link:hover::after {
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+}

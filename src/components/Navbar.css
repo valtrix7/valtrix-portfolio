@@ -1,0 +1,228 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding: 1.25rem 2rem;
+  pointer-events: none;
+}
+
+.nav-pill {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.625rem 0.625rem 0.625rem 1.5rem;
+  background: rgba(5, 5, 5, 0.6);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-pill);
+  transition: all 0.6s var(--ease-out-expo);
+}
+
+.navbar.scrolled .nav-pill {
+  background: rgba(5, 5, 5, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Logo */
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  flex-shrink: 0;
+  transition: opacity 0.3s var(--ease-out-expo);
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.logo-bracket {
+  color: rgba(255, 255, 255, 0.25);
+  font-weight: 300;
+  transition: color 0.3s var(--ease-out-expo);
+}
+
+.logo:hover .logo-bracket {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Desktop Nav Links */
+.nav-links-desktop {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.875rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  transition: all 0.4s var(--ease-out-expo);
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link.active {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-link-num {
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.2);
+  transition: color 0.3s var(--ease-out-expo);
+}
+
+.nav-link:hover .nav-link-num,
+.nav-link.active .nav-link-num {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  cursor: pointer;
+  gap: 5px;
+  padding: 0;
+  transition: all 0.4s var(--ease-out-expo);
+}
+
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger-line {
+  width: 16px;
+  height: 1.5px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.4s var(--ease-out-expo);
+  transform-origin: center;
+}
+
+.hamburger.open .hamburger-line:first-child {
+  transform: translateY(3.25px) rotate(45deg);
+}
+
+.hamburger.open .hamburger-line:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+/* Menu Overlay */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out-expo);
+}
+
+.menu-overlay.open {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.menu-overlay-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 5, 0.92);
+  backdrop-filter: blur(40px) saturate(1.2);
+  -webkit-backdrop-filter: blur(40px) saturate(1.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.25);
+  text-decoration: none;
+  letter-spacing: -0.03em;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all 0.6s var(--ease-out-expo);
+}
+
+.menu-overlay.open .menu-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.menu-link:hover {
+  color: var(--text-primary);
+}
+
+.menu-link-num {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.15);
+  letter-spacing: 0.05em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .nav-links-desktop {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-pill {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+  }
+}
