@@ -171,27 +171,36 @@ function AboutPage() {
     const wrapper = wrapperRef.current
     if (!container || !wrapper) return
 
-    const sections = gsap.utils.toArray('.h-panel')
-    const totalWidth = sections.reduce((acc, el) => acc + el.offsetWidth, 0)
-    const scrollDistance = totalWidth - window.innerWidth
+    let ctx
 
-    const ctx = gsap.context(() => {
-      const tween = gsap.to(sections, {
-        x: () => -scrollDistance,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: container,
-          pin: true,
-          scrub: 1,
-          end: () => `+=${scrollDistance}`,
-          invalidateOnRefresh: true,
-        },
+    const init = () => {
+      const sections = gsap.utils.toArray('.h-panel')
+      if (!sections.length) return
+
+      const totalWidth = sections.reduce((acc, el) => acc + el.offsetWidth, 0)
+      const scrollDistance = totalWidth - window.innerWidth
+
+      ctx = gsap.context(() => {
+        gsap.to(wrapper, {
+          x: -scrollDistance,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: container,
+            pin: true,
+            scrub: 1,
+            end: () => `+=${scrollDistance}`,
+            invalidateOnRefresh: true,
+          },
+        })
       })
+    }
 
-      return () => tween.kill()
-    }, container)
+    const timer = setTimeout(init, 100)
 
-    return () => ctx.revert()
+    return () => {
+      clearTimeout(timer)
+      if (ctx) ctx.revert()
+    }
   }, [])
 
   const stats = [
