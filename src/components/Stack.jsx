@@ -176,26 +176,35 @@ function Stack() {
             scrub: 1,
             invalidateOnRefresh: true,
             onRefresh: setWrapperHeight,
+            onUpdate: (self) => {
+              const bars = proficiencyRef.current?.querySelectorAll('.skill-progress')
+              if (!bars?.length) return
+
+              const panel = proficiencyRef.current
+              const panelLeft = panel.offsetLeft
+              const panelWidth = panel.offsetWidth
+              const containerWidth = container.scrollWidth
+              const progress = self.progress
+
+              const viewStart = progress * (containerWidth - window.innerWidth)
+              const viewEnd = viewStart + window.innerWidth
+
+              if (viewEnd > panelLeft + panelWidth * 0.3) {
+                bars.forEach((bar, i) => {
+                  if (!bar.dataset.animated) {
+                    bar.dataset.animated = 'true'
+                    gsap.to(bar, {
+                      width: `${technologies[i].level}%`,
+                      duration: 1.2,
+                      delay: i * 0.06,
+                      ease: 'power3.out',
+                    })
+                  }
+                })
+              }
+            },
           },
         })
-
-        // Animate skill bars when proficiency panel enters viewport
-        const bars = proficiencyRef.current?.querySelectorAll('.skill-progress')
-        if (bars?.length) {
-          gsap.set(bars, { width: '0%' })
-          gsap.to(bars, {
-            width: (i) => `${technologies[i].level}%`,
-            stagger: 0.06,
-            duration: 1.2,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: proficiencyRef.current,
-              containerAnimation: tween,
-              start: 'left 80%',
-              toggleActions: 'play none none none',
-            },
-          })
-        }
 
         return () => {
           tween.scrollTrigger && tween.scrollTrigger.kill()
