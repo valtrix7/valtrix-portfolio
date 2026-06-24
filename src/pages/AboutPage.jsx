@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useCountUp, useTilt, useScrollTilt, useStaggerAnimation } from '../hooks/useScrollAnimation'
 import AnimatedTitle from '../components/AnimatedTitle'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -11,7 +11,7 @@ const timeline = [
   {
     year: '2025',
     title: 'Scaling & Shipping',
-    description: 'Building and deploying production systems at scale. Focus on performance, monitoring, and reliable architecture.',
+    description: 'Building and deploying production systems at scale.',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
@@ -21,7 +21,7 @@ const timeline = [
   {
     year: '2024',
     title: 'Web3 & Smart Contracts',
-    description: 'Diving deep into Solidity, DeFi protocols, and building decentralized applications with real-world utility.',
+    description: 'Solidity, DeFi protocols, and decentralized applications.',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
@@ -32,7 +32,7 @@ const timeline = [
   {
     year: '2023',
     title: 'Full Stack Specialization',
-    description: 'Mastering the full stack — React, Node.js, databases, and cloud infrastructure. Shipping production apps.',
+    description: 'React, Node.js, databases, and cloud infrastructure.',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="16 18 22 12 16 6"/>
@@ -43,7 +43,7 @@ const timeline = [
   {
     year: '2022',
     title: 'Open Source & Community',
-    description: 'Contributing to open source projects, building in public, and learning from the developer community.',
+    description: 'Contributing to open source and building in public.',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -56,7 +56,7 @@ const timeline = [
   {
     year: '2021',
     title: 'First Steps',
-    description: 'Started coding, building small projects, and falling in love with the craft of software engineering.',
+    description: 'Started coding and fell in love with software engineering.',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
@@ -69,7 +69,7 @@ const timeline = [
 const values = [
   {
     title: 'Clean Code',
-    description: 'Code should be readable, maintainable, and elegant. If a human can\'t understand it, it\'s not done.',
+    description: 'Readable, maintainable, and elegant. If a human can\'t understand it, it\'s not done.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="16 18 22 12 16 6"/>
@@ -79,7 +79,7 @@ const values = [
   },
   {
     title: 'Security First',
-    description: 'Every line is a potential vulnerability. I write code with security as a first-class concern, not an afterthought.',
+    description: 'Every line is a potential vulnerability. Security is a first-class concern.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -88,7 +88,7 @@ const values = [
   },
   {
     title: 'Performance',
-    description: 'Every millisecond matters. I optimize for speed, efficiency, and resource usage — on-chain and off-chain.',
+    description: 'Every millisecond matters. Optimized for speed and efficiency.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
@@ -97,7 +97,7 @@ const values = [
   },
   {
     title: 'User Experience',
-    description: 'Technology should feel invisible. I build interfaces that are intuitive, fast, and delightful to use.',
+    description: 'Technology should feel invisible. Intuitive, fast, and delightful.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -115,50 +115,41 @@ function parseStat(value) {
   }
 }
 
-function ValueCard({ value, index, visible, setRef }) {
+function ValueCard({ value, index }) {
   const tiltRef = useTilt({ max: 10, scale: 1.02 })
-  const scrollRef = useScrollTilt({ maxTilt: 5, axis: 'y' })
 
   return (
-    <div
-      ref={(el) => { setRef(index)(el); scrollRef.current = el }}
-      className={`value-shell anim-scale-in ${visible(index) ? 'visible' : ''}`}
-      style={{ transitionDelay: `${index * 0.12}s` }}
-    >
-      <div ref={tiltRef} className="value-core tilt-card spotlight-card">
+    <div className="h-value-card">
+      <div ref={tiltRef} className="h-value-core tilt-card spotlight-card">
         <span className="tilt-glare" aria-hidden="true"></span>
-        <div className="value-icon">{value.icon}</div>
-        <h3 className="value-title">{value.title}</h3>
-        <p className="value-desc">{value.description}</p>
+        <div className="h-value-icon">{value.icon}</div>
+        <h3 className="h-value-title">{value.title}</h3>
+        <p className="h-value-desc">{value.description}</p>
       </div>
     </div>
   )
 }
 
-function BioStat({ stat, visible, index }) {
+function BioStat({ stat, index }) {
   const { target, suffix } = parseStat(stat.number)
   const decimals = Number.isInteger(target) ? 0 : 1
-  const current = useCountUp(target, visible, { duration: 1600, decimals })
+  const current = useCountUp(target, true, { duration: 1600, decimals })
 
   return (
-    <div className="about-bio-stat anim-scale-in" style={{ transitionDelay: `${index * 0.1}s` }}>
-      <div className="about-bio-stat-value">
-        {current}{visible ? suffix : ''}
+    <div className="h-stat-card">
+      <div className="h-stat-value">
+        {current}{suffix}
       </div>
-      <div className="about-bio-stat-label">{stat.label}</div>
-      <div className="about-bio-stat-sub">{stat.sublabel}</div>
+      <div className="h-stat-label">{stat.label}</div>
+      <div className="h-stat-sub">{stat.sublabel}</div>
     </div>
   )
 }
 
 function AboutPage() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
-  const [bioRef, bioVisible] = useScrollAnimation(0.1)
-  const [valuesRef, valuesVisible] = useScrollAnimation(0.1)
-  const [setValuesRef, visibleValues] = useStaggerAnimation(values.length, 0.1)
   const [time, setTime] = useState(new Date())
-  const horizontalRef = useRef(null)
-  const wrapperRef = useRef(null)
+  const containerRef = useRef(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -167,39 +158,31 @@ function AboutPage() {
   }, [])
 
   useEffect(() => {
-    const container = horizontalRef.current
-    const wrapper = wrapperRef.current
-    if (!container || !wrapper) return
+    const container = containerRef.current
+    if (!container) return
 
     let ctx
 
-    const init = () => {
-      const sections = gsap.utils.toArray('.h-panel')
-      if (!sections.length) return
+    const timer = setTimeout(() => {
+      const scrollWidth = container.scrollWidth - window.innerWidth
 
-      const totalWidth = sections.reduce((acc, el) => acc + el.offsetWidth, 0)
-      const scrollDistance = totalWidth - window.innerWidth
-
-      ctx = gsap.context(() => {
-        gsap.to(wrapper, {
-          x: -scrollDistance,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: container,
-            pin: true,
-            scrub: 1,
-            end: () => `+=${scrollDistance}`,
-            invalidateOnRefresh: true,
-          },
-        })
+      ctx = gsap.to(container, {
+        x: -scrollWidth,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: container.parentElement,
+          pin: true,
+          scrub: 1,
+          end: () => `+=${scrollWidth}`,
+          invalidateOnRefresh: true,
+        },
       })
-    }
-
-    const timer = setTimeout(init, 100)
+    }, 200)
 
     return () => {
       clearTimeout(timer)
-      if (ctx) ctx.revert()
+      if (ctx && ctx.scrollTrigger) ctx.scrollTrigger.kill()
+      gsap.killTweensOf(container)
     }
   }, [])
 
@@ -218,60 +201,54 @@ function AboutPage() {
 
   return (
     <section className="about-page">
-      <div className="about-page-container">
-
-        {/* Header - stays above horizontal scroll */}
-        <div
-          ref={titleRef}
-          className={`about-page-header anim-slide-right ${titleVisible ? 'visible' : ''}`}
-        >
-          <div className="eyebrow">
-            <span className="eyebrow-dot"></span>
-            About
-          </div>
-          <AnimatedTitle line1="About" line2="ME" delay={0.3} className="at-page" />
-          <p className="page-subtitle">The person behind the code</p>
+      {/* Header */}
+      <div
+        ref={titleRef}
+        className={`about-page-header anim-slide-right ${titleVisible ? 'visible' : ''}`}
+      >
+        <div className="eyebrow">
+          <span className="eyebrow-dot"></span>
+          About
         </div>
-
+        <AnimatedTitle line1="About" line2="ME" delay={0.3} className="at-page" />
+        <p className="page-subtitle">The person behind the code</p>
       </div>
 
-      {/* GSAP Horizontal Scroll */}
-      <div ref={horizontalRef} className="h-container">
-        <div ref={wrapperRef} className="h-wrapper">
+      {/* Horizontal Scroll */}
+      <div className="h-scroll-wrapper">
+        <div className="h-scroll-container" ref={containerRef}>
 
-          {/* Panel 1: Bio + Terminal */}
-          <div className="h-panel h-panel-bio">
-            <div className="h-panel-inner">
-              <div className="about-page-bio-text">
-                <p className="bio-lead">
+          {/* Bio + Terminal */}
+          <div className="h-section">
+            <div className="h-section-grid">
+              <div className="h-bio-text">
+                <p className="h-bio-lead">
                   I'm Valtrix — a full stack developer who builds web applications
                   and decentralized systems. I care about clean architecture,
                   security, and creating things that actually work well.
                 </p>
-                <p className="bio-regular">
+                <p className="h-bio-regular">
                   My work spans the full stack: from React frontends and Node.js APIs
-                  to Solidity smart contracts and on-chain protocols. I've shipped
-                  production apps, contributed to open source, and built DeFi tools
-                  used by real people.
+                  to Solidity smart contracts and on-chain protocols.
                 </p>
-                <p className="bio-regular">
+                <p className="h-bio-regular">
                   When I'm not coding, I'm exploring new protocols, experimenting
                   with zero-knowledge proofs, or designing interfaces that make
                   complex systems feel simple.
                 </p>
               </div>
 
-              <div className="about-page-terminal">
-                <div className="about-terminal-header">
+              <div className="h-terminal">
+                <div className="h-terminal-header">
                   <div className="terminal-dots">
                     <span className="dot dot-close"></span>
                     <span className="dot dot-min"></span>
                     <span className="dot dot-max"></span>
                   </div>
-                  <span className="terminal-title">identity.sh</span>
-                  <span className="terminal-time">{formatTime(time)} PKT</span>
+                  <span className="h-terminal-title">identity.sh</span>
+                  <span className="h-terminal-time">{formatTime(time)} PKT</span>
                 </div>
-                <div className="about-terminal-body">
+                <div className="h-terminal-body">
                   <div className="terminal-line">
                     <span className="terminal-prompt">$</span>
                     <span className="terminal-cmd">cat identity.json</span>
@@ -295,58 +272,45 @@ function AboutPage() {
             </div>
           </div>
 
-          {/* Panel 2: Stats */}
-          <div className="h-panel h-panel-stats">
-            <div className="h-panel-inner">
-              <h2 className="h-panel-label">Stats</h2>
-              <div className="h-stats-grid">
-                {stats.map((stat, i) => (
-                  <BioStat key={i} stat={stat} index={i} visible={bioVisible} />
-                ))}
-              </div>
+          {/* Stats */}
+          <div className="h-section h-section-stats">
+            <div className="h-section-label">Stats</div>
+            <div className="h-stats-row">
+              {stats.map((stat, i) => (
+                <BioStat key={i} stat={stat} index={i} />
+              ))}
             </div>
           </div>
 
-          {/* Panel 3: Journey */}
-          <div className="h-panel h-panel-journey">
-            <div className="h-panel-inner">
-              <h2 className="h-panel-label">Journey</h2>
-              <div className="h-journey-list">
-                {timeline.map((item, i) => (
-                  <div key={i} className="h-journey-item">
-                    <div className="h-journey-year">{item.year}</div>
-                    <div className="h-journey-content">
-                      <div className="h-journey-icon">{item.icon}</div>
-                      <h3 className="h-journey-title">{item.title}</h3>
-                      <p className="h-journey-desc">{item.description}</p>
-                    </div>
+          {/* Journey */}
+          <div className="h-section h-section-journey">
+            <div className="h-section-label">Journey</div>
+            <div className="h-journey-row">
+              {timeline.map((item, i) => (
+                <div key={i} className="h-journey-card">
+                  <div className="h-journey-year">{item.year}</div>
+                  <div className="h-journey-body">
+                    <div className="h-journey-icon">{item.icon}</div>
+                    <h3 className="h-journey-title">{item.title}</h3>
+                    <p className="h-journey-desc">{item.description}</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Panel 4: Values */}
-          <div className="h-panel h-panel-values">
-            <div className="h-panel-inner">
-              <h2 className="h-panel-label">Philosophy</h2>
-              <div className="h-values-grid">
-                {values.map((value, i) => (
-                  <ValueCard
-                    key={i}
-                    value={value}
-                    index={i}
-                    visible={(idx) => visibleValues.has(idx)}
-                    setRef={setValuesRef}
-                  />
-                ))}
-              </div>
+          {/* Values */}
+          <div className="h-section h-section-values">
+            <div className="h-section-label">Philosophy</div>
+            <div className="h-values-row">
+              {values.map((value, i) => (
+                <ValueCard key={i} value={value} index={i} />
+              ))}
             </div>
           </div>
 
         </div>
       </div>
-
     </section>
   )
 }
