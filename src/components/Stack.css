@@ -16,7 +16,7 @@
 .stack-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(6rem, 12vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
+  padding: clamp(6rem, 12vw, 10rem) clamp(1.5rem, 4vw, 4rem) 0;
 }
 
 .stack-header {
