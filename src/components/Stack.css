@@ -53,15 +53,16 @@
 
 .stack-h-panel {
   flex: 0 0 auto;
-  width: 80vw;
+  width: 100vw;
   height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: clamp(2rem, 4vw, 4rem);
 }
 
 .stack-h-panel-wide {
-  width: 100vw;
+  width: 120vw;
 }
 
 .stack-h-panel-inner {
