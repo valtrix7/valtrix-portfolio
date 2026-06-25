@@ -27,9 +27,16 @@ const steps = [
   {
     number: '04',
     title: 'Launch',
-    subtitle: 'Deploy & Evolve',
-    description: 'Deploy with confidence, monitor in production, and iterate based on real data. The launch is just the beginning of the cycle.',
-    tags: ['Deploy', 'Monitor', 'Iterate'],
+    subtitle: 'Deploy & Ship',
+    description: 'Deploy with confidence to production. Set up CI/CD pipelines, configure monitoring, and ensure everything runs smoothly at scale.',
+    tags: ['Deploy', 'CI/CD', 'Monitoring'],
+  },
+  {
+    number: '05',
+    title: 'Support',
+    subtitle: 'Maintain & Evolve',
+    description: 'Post-launch iteration based on real user data. Fix bugs, ship improvements, and evolve the product as requirements grow.',
+    tags: ['Iterate', 'Optimize', 'Scale'],
   },
 ]
 
