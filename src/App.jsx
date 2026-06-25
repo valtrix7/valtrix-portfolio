@@ -10,6 +10,7 @@ import ProjectsPage from './pages/ProjectsPage'
 import ProjectDetail from './pages/ProjectDetail'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
+import NotFound from './pages/NotFound'
 import SplashCursor from './components/SplashCursor'
 import './App.css'
 
@@ -109,6 +110,7 @@ function AppContent() {
             <Route path="/projects/:id" element={<ProjectDetail />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </PageTransition>
