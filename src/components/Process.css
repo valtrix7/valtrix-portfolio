@@ -103,8 +103,8 @@
 /* ==================== */
 .process-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
   position: relative;
 }
 
@@ -337,13 +337,8 @@
 /* ==================== */
 @media (max-width: 1024px) {
   .process-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem;
-  }
-
-  .process-step:nth-child(3),
-  .process-step:nth-child(4) {
-    margin-top: 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
   }
 }
 
