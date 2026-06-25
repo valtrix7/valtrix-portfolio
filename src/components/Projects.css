@@ -190,11 +190,37 @@
 }
 
 @media (max-width: 768px) {
+  .projects {
+    padding: clamp(4rem, 10vw, 6rem) clamp(1rem, 3vw, 1.5rem);
+  }
+
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .project-shell {
+    aspect-ratio: auto;
+  }
+
+  .project-core {
+    min-height: 400px;
+  }
+
+  .project-img {
     aspect-ratio: 16 / 10;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-content {
+    padding: 1.25rem;
+  }
+
+  .project-title {
+    font-size: 1.125rem;
+  }
+
+  .project-description {
+    font-size: 0.8125rem;
   }
 }

@@ -297,11 +297,42 @@
 }
 
 @media (max-width: 768px) {
+  .projects-page {
+    padding: clamp(5rem, 10vw, 7rem) clamp(1rem, 3vw, 1.5rem) clamp(4rem, 8vw, 5rem);
+  }
+
   .projects-page-grid {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .project-page-shell {
+    aspect-ratio: auto;
+  }
+
+  .project-page-core {
+    min-height: 420px;
+  }
+
+  .project-page-img {
     aspect-ratio: 16 / 10;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-page-title {
+    font-size: 1.125rem;
+  }
+
+  .project-page-desc {
+    font-size: 0.8125rem;
+  }
+
+  .project-page-tech {
+    gap: 0.25rem;
+  }
+
+  .tech-tag {
+    font-size: 0.625rem;
+    padding: 0.25rem 0.5rem;
   }
 }
