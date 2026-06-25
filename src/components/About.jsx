@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import { gsap } from 'gsap'
 import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt, useMagnetic } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
 import './About.css'
@@ -28,39 +29,117 @@ function About() {
     return () => clearInterval(timer)
   }, [])
 
+  // MagicBento: spotlight + particles
   useEffect(() => {
+    const bentoEl = document.querySelector('.about-bento')
+    if (!bentoEl) return
+
+    // Create spotlight element
+    const spotlight = document.createElement('div')
+    spotlight.className = 'mb-spotlight'
+    document.body.appendChild(spotlight)
+
+    const cards = bentoEl.querySelectorAll('.about-bento-card')
+    const particlesMap = new Map()
+
+    const createParticle = (card, x, y) => {
+      const el = document.createElement('div')
+      el.className = 'mb-particle'
+      el.style.left = `${x}px`
+      el.style.top = `${y}px`
+      card.appendChild(el)
+
+      gsap.fromTo(el, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' })
+      gsap.to(el, {
+        x: (Math.random() - 0.5) * 80,
+        y: (Math.random() - 0.5) * 80,
+        duration: 2 + Math.random() * 2,
+        ease: 'none',
+        repeat: -1,
+        yoyo: true
+      })
+      gsap.to(el, {
+        opacity: 0.2,
+        duration: 1.5,
+        ease: 'power2.inOut',
+        repeat: -1,
+        yoyo: true
+      })
+
+      return el
+    }
+
+    const clearParticles = (card) => {
+      const pts = particlesMap.get(card) || []
+      pts.forEach(p => {
+        gsap.to(p, {
+          scale: 0, opacity: 0, duration: 0.3, ease: 'back.in(1.7)',
+          onComplete: () => p.parentNode?.removeChild(p)
+        })
+      })
+      particlesMap.set(card, [])
+    }
+
     const handleMouseMove = (e) => {
-      const cards = document.querySelectorAll('.about-bento-card')
+      const bentoRect = bentoEl.getBoundingClientRect()
+      const inside = e.clientX >= bentoRect.left && e.clientX <= bentoRect.right &&
+                     e.clientY >= bentoRect.top && e.clientY <= bentoRect.bottom
+
+      if (!inside) {
+        gsap.to(spotlight, { opacity: 0, duration: 0.3 })
+        cards.forEach(c => c.style.setProperty('--glow-intensity', '0'))
+        return
+      }
+
+      // Move spotlight
+      gsap.to(spotlight, { left: e.clientX, top: e.clientY, duration: 0.1, opacity: 0.5 })
+
+      // Update each card
       cards.forEach(card => {
         const rect = card.getBoundingClientRect()
-        const x = ((e.clientX - rect.left) / rect.width) * 100
-        const y = ((e.clientY - rect.top) / rect.height) * 100
-        const centerX = rect.width / 2
-        const centerY = rect.height / 2
-        const distX = e.clientX - rect.left
-        const distY = e.clientY - rect.top
-        const distance = Math.sqrt(Math.pow(distX - centerX, 2) + Math.pow(distY - centerY, 2))
-        const maxDist = Math.sqrt(Math.pow(centerX, 2) + Math.pow(centerY, 2))
-        const intensity = Math.max(0, 1 - distance / maxDist)
+        const cx = rect.left + rect.width / 2
+        const cy = rect.top + rect.height / 2
+        const dist = Math.hypot(e.clientX - cx, e.clientY - cy) - Math.max(rect.width, rect.height) / 2
+        const maxDist = 300
+        const intensity = Math.max(0, 1 - Math.max(0, dist) / maxDist)
 
-        card.style.setProperty('--glow-x', `${x}%`)
-        card.style.setProperty('--glow-y', `${y}%`)
+        const relX = ((e.clientX - rect.left) / rect.width) * 100
+        const relY = ((e.clientY - rect.top) / rect.height) * 100
+        card.style.setProperty('--glow-x', `${relX}%`)
+        card.style.setProperty('--glow-y', `${relY}%`)
         card.style.setProperty('--glow-intensity', intensity.toString())
+
+        // Spawn particles on hover
+        if (intensity > 0.3) {
+          if (!particlesMap.has(card)) particlesMap.set(card, [])
+          const pts = particlesMap.get(card)
+          if (pts.length < 6) {
+            const px = e.clientX - rect.left
+            const py = e.clientY - rect.top
+            pts.push(createParticle(card, px, py))
+          }
+        } else {
+          clearParticles(card)
+        }
       })
     }
 
     const handleMouseLeave = () => {
-      const cards = document.querySelectorAll('.about-bento-card')
-      cards.forEach(card => {
-        card.style.setProperty('--glow-intensity', '0')
+      gsap.to(spotlight, { opacity: 0, duration: 0.3 })
+      cards.forEach(c => {
+        c.style.setProperty('--glow-intensity', '0')
+        clearParticles(c)
       })
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mouseleave', handleMouseLeave)
+    document.addEventListener('mouseleave', handleMouseLeave)
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('mouseleave', handleMouseLeave)
+      document.removeEventListener('mouseleave', handleMouseLeave)
+      spotlight.parentNode?.removeChild(spotlight)
+      cards.forEach(c => clearParticles(c))
     }
   }, [])
 
