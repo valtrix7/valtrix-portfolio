@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, forwardRef } from 'react';
 import { gsap } from 'gsap';
 import './MagicBento.css';
 
@@ -41,14 +41,14 @@ const updateCardGlowProperties = (card, mouseX, mouseY, glow, radius) => {
   card.style.setProperty('--glow-radius', `${radius}px`);
 };
 
-export const ParticleCard = ({
+export const ParticleCard = forwardRef(({
   children,
   className = '',
   disableAnimations = false,
   style,
   particleCount = DEFAULT_PARTICLE_COUNT,
   glowColor = DEFAULT_GLOW_COLOR,
-}) => {
+}, ref) => {
   const cardRef = useRef(null);
   const particlesRef = useRef([]);
   const timeoutsRef = useRef([]);
@@ -152,14 +152,18 @@ export const ParticleCard = ({
 
   return (
     <div
-      ref={cardRef}
+      ref={(el) => {
+        cardRef.current = el;
+        if (typeof ref === 'function') ref(el);
+        else if (ref) ref.current = el;
+      }}
       className={`${className} mb-particle-container`}
       style={{ ...style, position: 'relative', overflow: 'hidden' }}
     >
       {children}
     </div>
   );
-};
+});
 
 export const GlobalSpotlight = ({
   gridRef,
