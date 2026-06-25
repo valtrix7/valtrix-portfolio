@@ -60,7 +60,8 @@ function AppContent() {
         SPLAT_RADIUS={0.2}
         SPLAT_FORCE={6000}
         SHADING={true}
-        RAINBOW_MODE={true}
+        RAINBOW_MODE={false}
+        COLOR="#ffffff"
       />
       <a href="#about" className="skip-link">Skip to content</a>
       <div
