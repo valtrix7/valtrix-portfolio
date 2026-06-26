@@ -46,40 +46,56 @@ function Process() {
           </p>
         </div>
 
-        {/* Editorial Timeline */}
-        <div className="process-timeline">
+        {/* Steps */}
+        <div className="process-steps">
 
-          {/* Scanning light */}
-          <div className="timeline-track">
-            <div className="timeline-scan"></div>
+          {/* Connecting arc */}
+          <div className="process-arc">
+            <svg className="process-arc-svg" viewBox="0 0 100 300" preserveAspectRatio="none">
+              <path
+                d="M 50 0 C 50 50, 50 50, 50 100 S 50 150, 50 200 S 50 250, 50 300"
+                fill="none"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.5"
+              />
+            </svg>
           </div>
 
           {steps.map((step, i) => (
             <div
               key={step.number}
               ref={setRef(i)}
-              className={`process-row anim-fade-up ${stepsVisible.has(i) ? 'visible' : ''}`}
-              style={{ transitionDelay: `${i * 0.12}s` }}
+              className={`process-block anim-fade-up ${stepsVisible.has(i) ? 'visible' : ''} ${i % 2 === 0 ? 'align-left' : 'align-right'}`}
+              style={{ transitionDelay: `${i * 0.15}s` }}
             >
-              {/* Left — Big Number */}
-              <div className="process-num-col">
-                <span className="process-big-num">{step.number}</span>
-                <div className="process-num-dot">
-                  <span className="process-num-dot-inner"></span>
+              {/* Watermark number */}
+              <span className="process-watermark">{step.number}</span>
+
+              {/* Content card */}
+              <div className="process-card">
+                <div className="process-card-top">
+                  <span className="process-card-num">{step.number}</span>
+                  <div className="process-card-line"></div>
+                  <h3 className="process-card-title">{step.title}</h3>
+                </div>
+                <p className="process-card-desc">{step.description}</p>
+                <div className="process-card-tags">
+                  {step.tags.map((tag, j) => (
+                    <span
+                      key={tag}
+                      className="process-card-tag"
+                      style={{ transitionDelay: `${i * 0.15 + j * 0.05 + 0.3}s` }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
 
-              {/* Right — Content */}
-              <div className="process-content-col">
-                <div className="process-content-head">
-                  <h3 className="process-step-title">{step.title}</h3>
-                  <div className="process-step-tags">
-                    {step.tags.map((tag) => (
-                      <span key={tag} className="process-tag">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-                <p className="process-step-desc">{step.description}</p>
+              {/* Step dot */}
+              <div className="process-step-dot">
+                <span className="process-step-dot-ring"></span>
+                <span className="process-step-dot-core"></span>
               </div>
             </div>
           ))}
