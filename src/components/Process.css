@@ -191,32 +191,18 @@
 /* ==================== */
 /* Card — tilt + glow   */
 /* ==================== */
+.process-glow-wrap {
+  position: relative;
+}
+
 .process-card {
   position: relative;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  transition: border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   transform-style: preserve-3d;
   will-change: transform;
 }
 
-.process-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: 2;
-}
-
-/* Radial spotlight — follows cursor */
 .process-card::after {
   content: '';
   position: absolute;
@@ -230,15 +216,6 @@
   transition: opacity 0.5s ease;
   pointer-events: none;
   z-index: 1;
-}
-
-.process-card:hover {
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255,255,255,0.05) inset;
-}
-
-.process-card:hover::before {
-  opacity: 1;
 }
 
 .process-card:hover::after {

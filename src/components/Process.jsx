@@ -1,6 +1,7 @@
 import { useRef, useCallback } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useTilt, useParallax } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
+import BorderGlow from './BorderGlow'
 import './Process.css'
 
 const steps = [
@@ -53,33 +54,45 @@ function ProcessBlock({ step, index, setRef, visible }) {
         {step.number}
       </span>
 
-      {/* Content card — tilt + spotlight */}
-      <div
-        ref={(el) => { tiltRef.current = el; cardRef.current = el }}
-        className="process-card tilt-card"
-        onMouseMove={handleMouseMove}
+      {/* Content card — BorderGlow + tilt + spotlight */}
+      <BorderGlow
+        edgeSensitivity={30}
+        glowColor="40 80 80"
+        backgroundColor="rgba(255,255,255,0.02)"
+        borderRadius={16}
+        glowRadius={40}
+        glowIntensity={0.8}
+        coneSpread={25}
+        colors={['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.03)', 'rgba(255,255,255,0.06)']}
+        className="process-glow-wrap"
       >
-        <span className="tilt-glare" aria-hidden="true"></span>
-        <div className="process-card-inner">
-          <div className="process-card-top">
-            <span className="process-card-num">{step.number}</span>
-            <div className="process-card-line"></div>
-            <h3 className="process-card-title">{step.title}</h3>
-          </div>
-          <p className="process-card-desc">{step.description}</p>
-          <div className="process-card-tags">
-            {step.tags.map((tag, j) => (
-              <span
-                key={tag}
-                className="process-card-tag"
-                style={{ transitionDelay: `${index * 0.15 + j * 0.05 + 0.3}s` }}
-              >
-                {tag}
-              </span>
-            ))}
+        <div
+          ref={(el) => { tiltRef.current = el; cardRef.current = el }}
+          className="process-card tilt-card"
+          onMouseMove={handleMouseMove}
+        >
+          <span className="tilt-glare" aria-hidden="true"></span>
+          <div className="process-card-inner">
+            <div className="process-card-top">
+              <span className="process-card-num">{step.number}</span>
+              <div className="process-card-line"></div>
+              <h3 className="process-card-title">{step.title}</h3>
+            </div>
+            <p className="process-card-desc">{step.description}</p>
+            <div className="process-card-tags">
+              {step.tags.map((tag, j) => (
+                <span
+                  key={tag}
+                  className="process-card-tag"
+                  style={{ transitionDelay: `${index * 0.15 + j * 0.05 + 0.3}s` }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </BorderGlow>
 
       {/* Step dot */}
       <div className="process-step-dot">
