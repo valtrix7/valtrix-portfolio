@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import Hero from '../components/Hero'
 import About from '../components/About'
 import Projects from '../components/Projects'
+import Process from '../components/Process'
 import Stack from '../components/Stack'
 import Contact from '../components/Contact'
 
@@ -15,6 +16,7 @@ function Home({ mousePosition, scrollProgress }) {
       <Hero mousePosition={mousePosition} scrollProgress={scrollProgress} />
       <About />
       <Projects />
+      <Process />
       <Stack />
       <Contact />
     </>
