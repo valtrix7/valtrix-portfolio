@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { useScrollAnimation, useMagnetic, useTilt } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
 import BorderGlow from './BorderGlow'
-import { ShineBorder } from './ShineBorder'
 import './Contact.css'
 
 const typingTexts = [
@@ -167,72 +166,107 @@ function Contact() {
           </div>
 
           {/* Right: Form */}
-          <ShineBorder
-            borderWidth={1}
-            duration={8}
-            shineColor={['#ffffff', 'transparent', '#ffffff']}
+          <div
+            ref={formRef}
             className={`contact-form-wrap anim-fade-up ${formVisible ? 'visible' : ''}`}
-            style={{ transitionDelay: '0.15s', borderRadius: 'var(--radius-xl)' }}
+            style={{ transitionDelay: '0.15s' }}
           >
-              <form className="contact-form" onSubmit={handleSubmit} noValidate>
-              <div className={`form-shell ${errors.name ? 'error' : ''}`}>
-                <div className="form-core">
-                  <label className="form-label" htmlFor="c-name">Name</label>
+            <form className="compose-form" onSubmit={handleSubmit} noValidate>
+              <div className="compose-header">
+                <div className="compose-dots">
+                  <span className="compose-dot close"></span>
+                  <span className="compose-dot min"></span>
+                  <span className="compose-dot max"></span>
+                </div>
+                <span className="compose-title">compose.msg</span>
+                <span className="compose-status">
+                  <span className="status-indicator"></span>
+                  Ready
+                </span>
+              </div>
+
+              <div className="compose-fields">
+                <div className={`compose-field ${errors.name ? 'error' : ''}`}>
+                  <label className="compose-label" htmlFor="c-name">
+                    <span className="label-prefix">$</span>
+                    <span className="label-name">to</span>
+                    <span className="label-syntax">:</span>
+                  </label>
                   <input
                     id="c-name"
                     type="text"
                     name="name"
-                    className="form-input"
-                    placeholder="John Doe"
+                    className="compose-input"
+                    placeholder="Full Name"
                     value={formData.name}
                     onChange={handleChange}
+                    autoComplete="name"
                   />
-                  {errors.name && <span className="form-error">{errors.name}</span>}
+                  {errors.name && <span className="compose-error">{errors.name}</span>}
                 </div>
-              </div>
 
-              <div className={`form-shell ${errors.email ? 'error' : ''}`}>
-                <div className="form-core">
-                  <label className="form-label" htmlFor="c-email">Email</label>
+                <div className={`compose-field ${errors.email ? 'error' : ''}`}>
+                  <label className="compose-label" htmlFor="c-email">
+                    <span className="label-prefix">$</span>
+                    <span className="label-name">email</span>
+                    <span className="label-syntax">:</span>
+                  </label>
                   <input
                     id="c-email"
                     type="email"
                     name="email"
-                    className="form-input"
-                    placeholder="john@example.com"
+                    className="compose-input"
+                    placeholder="you@domain.com"
                     value={formData.email}
                     onChange={handleChange}
+                    autoComplete="email"
                   />
-                  {errors.email && <span className="form-error">{errors.email}</span>}
+                  {errors.email && <span className="compose-error">{errors.email}</span>}
+                </div>
+
+                <div className={`compose-field ${errors.message ? 'error' : ''}`}>
+                  <label className="compose-label" htmlFor="c-message">
+                    <span className="label-prefix">$</span>
+                    <span className="label-name">body</span>
+                    <span className="label-syntax">:</span>
+                  </label>
+                  <div className="compose-textarea-wrap">
+                    <textarea
+                      id="c-message"
+                      name="message"
+                      className="compose-textarea"
+                      rows="6"
+                      placeholder="Message body..."
+                      value={formData.message}
+                      onChange={handleChange}
+                    ></textarea>
+                    <div className="compose-char-count">
+                      <span className="char-current">{formData.message.length}</span>
+                      <span className="char-separator">/</span>
+                      <span className="char-max">5000</span>
+                    </div>
+                  </div>
+                  {errors.message && <span className="compose-error">{errors.message}</span>}
                 </div>
               </div>
 
-              <div className={`form-shell ${errors.message ? 'error' : ''}`}>
-                <div className="form-core">
-                  <label className="form-label" htmlFor="c-message">Message</label>
-                  <textarea
-                    id="c-message"
-                    name="message"
-                    className="form-input form-textarea"
-                    rows="5"
-                    placeholder="Tell me about your project..."
-                    value={formData.message}
-                    onChange={handleChange}
-                  ></textarea>
-                  {errors.message && <span className="form-error">{errors.message}</span>}
+              <div className="compose-footer">
+                <div className="compose-hints">
+                  <span className="hint">Tab</span> to navigate
+                  <span className="hint-sep">·</span>
+                  <span className="hint">Enter</span> to send
                 </div>
+                <button ref={submitRef} type="submit" className="compose-send" disabled={!formData.name || !formData.email || !formData.message}>
+                  <span className="send-text">Send</span>
+                  <span className="send-animation">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                    </svg>
+                  </span>
+                </button>
               </div>
-
-              <button ref={submitRef} type="submit" className="submit-btn">
-                <span>Send Message</span>
-                <span className="submit-btn-icon">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                  </svg>
-                </span>
-              </button>
             </form>
-          </ShineBorder>
+          </div>
 
         </div>
       </div>
