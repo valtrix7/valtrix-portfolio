@@ -1,0 +1,36 @@
+.shine-border-wrapper {
+  position: relative;
+  border-radius: inherit;
+}
+
+.shine-border-element {
+  position: absolute;
+  inset: 0;
+  size: full;
+  border-radius: inherit;
+  padding: var(--border-width, 1px);
+  background-size: 300% 300%;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: shine var(--duration, 14s) infinite linear;
+  will-change: background-position;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}

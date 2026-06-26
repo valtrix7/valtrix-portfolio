@@ -953,8 +953,8 @@ function SplashCursor({
 
     function handleMouseDown(e) {
       let pointer = pointers[0];
-      let posX = scaleByPixelRatio(e.clientX);
-      let posY = scaleByPixelRatio(e.clientY);
+      let posX = scaleByPixelRatio(e.clientX + 50);
+      let posY = scaleByPixelRatio(e.clientY + 50);
       updatePointerDownData(pointer, -1, posX, posY);
       clickSplat(pointer);
     }
@@ -962,8 +962,8 @@ function SplashCursor({
     let firstMouseMoveHandled = false;
     function handleMouseMove(e) {
       let pointer = pointers[0];
-      let posX = scaleByPixelRatio(e.clientX);
-      let posY = scaleByPixelRatio(e.clientY);
+      let posX = scaleByPixelRatio(e.clientX + 50);
+      let posY = scaleByPixelRatio(e.clientY + 50);
       if (!firstMouseMoveHandled) {
         let color = generateColor();
         updatePointerMoveData(pointer, posX, posY, color);

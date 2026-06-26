@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useScrollAnimation, useMagnetic, useTilt } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
 import BorderGlow from './BorderGlow'
+import { ShineBorder } from './ShineBorder'
 import './Contact.css'
 
 const typingTexts = [
@@ -171,7 +172,14 @@ function Contact() {
             className={`contact-form-wrap anim-fade-up ${formVisible ? 'visible' : ''}`}
             style={{ transitionDelay: '0.15s' }}
           >
-            <form className="contact-form" onSubmit={handleSubmit} noValidate>
+            <ShineBorder
+              borderWidth={1}
+              duration={8}
+              shineColor={['#ffffff', 'transparent', '#ffffff']}
+              className="contact-form-shine"
+              style={{ borderRadius: 'var(--radius-lg)' }}
+            >
+              <form className="contact-form" onSubmit={handleSubmit} noValidate>
               <div className={`form-shell ${errors.name ? 'error' : ''}`}>
                 <div className="form-core">
                   <label className="form-label" htmlFor="c-name">Name</label>
@@ -229,6 +237,7 @@ function Contact() {
                 </span>
               </button>
             </form>
+            </ShineBorder>
           </div>
 
         </div>

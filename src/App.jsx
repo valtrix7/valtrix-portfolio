@@ -83,13 +83,13 @@ function AppContent() {
       <div className="grain-overlay"></div>
       <SplashCursor
         SIM_RESOLUTION={128}
-        DYE_RESOLUTION={1440}
-        DENSITY_DISSIPATION={3.5}
-        VELOCITY_DISSIPATION={2}
-        PRESSURE={0.1}
-        CURL={3}
-        SPLAT_RADIUS={0.2}
-        SPLAT_FORCE={6000}
+        DYE_RESOLUTION={1024}
+        DENSITY_DISSIPATION={4}
+        VELOCITY_DISSIPATION={3}
+        PRESSURE={0.08}
+        CURL={2}
+        SPLAT_RADIUS={0.15}
+        SPLAT_FORCE={3000}
         SHADING={true}
         RAINBOW_MODE={false}
         COLOR="#ffffff"
