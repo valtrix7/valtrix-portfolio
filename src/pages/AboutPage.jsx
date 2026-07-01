@@ -1,9 +1,11 @@
-import { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, Suspense, lazy } from 'react'
 import { useScrollAnimation, useCountUp, useTilt, useScrollTilt, useStaggerAnimation } from '../hooks/useScrollAnimation'
 import AnimatedTitle from '../components/AnimatedTitle'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './AboutPage.css'
+
+const Lanyard = lazy(() => import('../components/Lanyard/Lanyard'))
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -146,16 +148,33 @@ function BioStat({ stat, index }) {
   )
 }
 
+class LanyardErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false, error: null }
+  }
+  static getDerivedStateFromError(error) {
+    console.error('Lanyard 3D error:', error)
+    return { hasError: true, error }
+  }
+  componentDidCatch(error, info) {
+    console.error('Lanyard error info:', error.message, info.componentStack)
+  }
+  render() {
+    if (this.state.hasError) {
+      return <div className="lanyard-fallback">{this.state.error?.message || '3D card unavailable'}</div>
+    }
+    return this.props.children
+  }
+}
+
 function AboutPage() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
-  const [time, setTime] = useState(new Date())
   const containerRef = useRef(null)
   const wrapperRef = useRef(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    const timer = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(timer)
   }, [])
 
   useEffect(() => {
@@ -226,13 +245,6 @@ function AboutPage() {
     { number: '6+', label: 'Open Source', sublabel: 'Contributions' },
   ]
 
-  const formatTime = (date) => {
-    return date.toLocaleTimeString('en-US', {
-      hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: true, timeZone: 'Asia/Karachi',
-    })
-  }
-
   return (
     <section className="about-page">
       {/* Header */}
@@ -268,36 +280,12 @@ function AboutPage() {
             </p>
           </div>
 
-          <div className="h-terminal">
-            <div className="h-terminal-header">
-              <div className="terminal-dots">
-                <span className="dot dot-close"></span>
-                <span className="dot dot-min"></span>
-                <span className="dot dot-max"></span>
-              </div>
-              <span className="h-terminal-title">identity.sh</span>
-              <span className="h-terminal-time">{formatTime(time)} PKT</span>
-            </div>
-            <div className="h-terminal-body">
-              <div className="terminal-line">
-                <span className="terminal-prompt">$</span>
-                <span className="terminal-cmd">cat identity.json</span>
-              </div>
-              <pre className="terminal-json">{`{
-  "name": "Abdullah",
-  "role": "Full Stack Developer",
-  "location": "Worldwide",
-  "available": true,
-  "languages": [
-    "JavaScript", "TypeScript",
-    "Solidity", "Python"
-  ]
-}`}</pre>
-              <div className="terminal-line">
-                <span className="terminal-prompt">$</span>
-                <span className="terminal-cursor">_</span>
-              </div>
-            </div>
+          <div className="h-lanyard-section">
+            <LanyardErrorBoundary>
+              <Suspense fallback={<div className="lanyard-fallback">Loading 3D...</div>}>
+                <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
+              </Suspense>
+            </LanyardErrorBoundary>
           </div>
         </div>
       </div>
