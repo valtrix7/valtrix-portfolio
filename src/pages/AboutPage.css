@@ -384,33 +384,6 @@
 /* ==================== */
 /* RESPONSIVE           */
 /* ==================== */
-.h-lanyard-section {
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-subtle);
-  overflow: hidden;
-  transition: border-color 0.5s ease, box-shadow 0.5s ease;
-}
-
-.h-lanyard-section:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.h-lanyard-section .lanyard-wrapper {
-  height: 420px;
-  transform: none;
-}
-
-.lanyard-fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: var(--text-tertiary);
-  font-size: 0.875rem;
-}
-
 @media (max-width: 768px) {
   .h-section {
     padding: clamp(1.5rem, 3vw, 2rem);
@@ -444,10 +417,6 @@
 
   .h-values-row {
     grid-template-columns: 1fr;
-  }
-
-  .h-lanyard-section .lanyard-wrapper {
-    height: 350px;
   }
 }
 

@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useRef, Suspense, lazy } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useScrollAnimation, useCountUp, useTilt, useScrollTilt, useStaggerAnimation } from '../hooks/useScrollAnimation'
 import AnimatedTitle from '../components/AnimatedTitle'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './AboutPage.css'
-
-const Lanyard = lazy(() => import('../components/Lanyard/Lanyard'))
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -148,26 +146,6 @@ function BioStat({ stat, index }) {
   )
 }
 
-class LanyardErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { hasError: false, error: null }
-  }
-  static getDerivedStateFromError(error) {
-    console.error('Lanyard 3D error:', error)
-    return { hasError: true, error }
-  }
-  componentDidCatch(error, info) {
-    console.error('Lanyard error info:', error.message, info.componentStack)
-  }
-  render() {
-    if (this.state.hasError) {
-      return <div className="lanyard-fallback">{this.state.error?.message || '3D card unavailable'}</div>
-    }
-    return this.props.children
-  }
-}
-
 function AboutPage() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const containerRef = useRef(null)
@@ -280,13 +258,6 @@ function AboutPage() {
             </p>
           </div>
 
-          <div className="h-lanyard-section">
-            <LanyardErrorBoundary>
-              <Suspense fallback={<div className="lanyard-fallback">Loading 3D...</div>}>
-                <Lanyard position={[0, 0, 30]} gravity={[0, -40, 0]} />
-              </Suspense>
-            </LanyardErrorBoundary>
-          </div>
         </div>
       </div>
 
